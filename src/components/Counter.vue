@@ -10,7 +10,7 @@ const TICK = 1000;
 export default {
   props: [
     'amount', // in seconds
-    'timeoutHandler', // callback
+    'timeoutHandler' // callback
   ],
   data: () => ({
     time: 0
@@ -31,6 +31,6 @@ export default {
         this.$props.timeoutHandler();
       }
     }
-  },
+  }
 };
 </script>

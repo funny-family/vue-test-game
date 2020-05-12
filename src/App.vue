@@ -6,7 +6,7 @@
       v-if="isStateAnswer"
     />
     <Counter
-      amount="10"
+      amount="3"
       :timeout-handler="timeoutHandler"
     />
     <Question
@@ -61,7 +61,7 @@ export default {
     },
     isStateIdle() {
       return this.$data.gameState === GAME_STATE_IDLE;
-    },
+    }
   },
   methods: {
     timeoutHandler() {
@@ -81,7 +81,7 @@ export default {
       this.$data.question = generateQuestion();
       this.$data.gameState = GAME_STATE_RUN;
     }
-  },
+  }
 };
 </script>
 

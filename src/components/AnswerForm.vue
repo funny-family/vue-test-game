@@ -8,7 +8,7 @@
 <script>
 export default {
   props: [
-    'handler',
+    'handler'
   ],
   data: () => ({ answer: '' }),
   methods: {
