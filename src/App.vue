@@ -66,7 +66,7 @@ export default {
     question: null,
     userAnswer: '',
     gameResultMessage: '',
-    timeToAnswerTheQuestion: 6
+    timeToAnswerTheQuestion: 100
   }),
   computed: {
     isStateRun() {
@@ -87,6 +87,7 @@ export default {
     answerHandler(answer) {
       if (checkAnswer(this.$data.question, Number.parseInt(answer))) {
         this.$data.gameResultMessage = 'Correct!';
+        this.$data.question = generateQuestion();
       } else {
         this.$data.gameResultMessage = 'Wrong!';
       }
