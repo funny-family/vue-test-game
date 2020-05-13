@@ -6,7 +6,7 @@
       v-if="isStateAnswer"
     />
     <Counter
-      amount="5"
+      :amount="timeToAnswerTheQuestion"
       :timeout-handler="timeoutHandler"
       v-if="isStateRun"
     />
@@ -65,7 +65,8 @@ export default {
     gameState: GAME_STATE_IDLE,
     question: null,
     userAnswer: '',
-    gameResultMessage: ''
+    gameResultMessage: '',
+    timeToAnswerTheQuestion: 6
   }),
   computed: {
     isStateRun() {

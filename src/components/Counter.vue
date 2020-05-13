@@ -8,10 +8,15 @@
 const TICK = 1000;
 
 export default {
-  props: [
-    'amount', // in seconds
-    'timeoutHandler' // callback
-  ],
+  props: {
+    amount: {
+      type: Number,
+      default: 1
+    },
+    timeoutHandler: {
+      type: Function
+    }
+  },
   data: () => ({
     time: 0
   }),
