@@ -93,7 +93,7 @@ export default {
         this.$data.answerResult = '';
         setTimeout(() => {
           this.$data.gameResultMessage = ''
-        }, 1000);
+        }, 500);
         this.$data.question = generateQuestion();
       } else {
         this.$data.gameResultMessage = 'Wrong!';
