@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input @keyup.enter="sendAnswer" type="text" id="answer" v-model="answer" autocomplete="off" />
+    <input @keyup.enter="sendAnswer" type="text" v-model="answer" autocomplete="off" />
     <button @click="sendAnswer">Answer</button>
   </div>
 </template>
