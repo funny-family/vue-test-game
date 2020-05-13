@@ -1,6 +1,6 @@
 <template>
   <div>
-    <input type="text" id="answer" v-model="answer" />
+    <input type="text" id="answer" v-model="answer" autocomplete="off" />
     <button @click="sendAnswer">Answer</button>
   </div>
 </template>
