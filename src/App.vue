@@ -10,6 +10,16 @@
       :timeout-handler="timeoutHandler"
       v-if="isStateRun"
     />
+    <div
+      :style="{
+        color:
+          gameResultMessage === 'Correct!'? '#2CE855' :
+          gameResultMessage === 'Time is over!' ? '#2c3e50' :
+          '#EB3D3D'
+      }"
+    >
+      {{ gameResultMessage }}
+    </div>
     <Question
       :question="question"
       v-if="isStateRun"
