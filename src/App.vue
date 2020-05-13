@@ -32,7 +32,12 @@
       @click="startClicked"
       v-if="isStateIdle || isStateAnswer"
     >
-      Start game!
+      <div v-if="gameResultMessage === 'Time is over!'">
+        Restart game.
+      </div>
+      <div v-else>
+        Start game!
+      </div>
     </button>
   </div>
 </template>
@@ -90,6 +95,7 @@ export default {
     startClicked() {
       this.$data.question = generateQuestion();
       this.$data.gameState = GAME_STATE_RUN;
+      this.$data.gameResultMessage = '';
     }
   }
 };
