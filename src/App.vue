@@ -8,9 +8,8 @@
     <Counter
       amount="5"
       :timeout-handler="timeoutHandler"
-      v-if="!gameResultMessage"
+      v-if="isStateRun"
     />
-    <div v-else>{{ gameResultMessage }}</div>
     <Question
       :question="question"
       v-if="isStateRun"
