@@ -26,6 +26,7 @@
     />
     <AnswerForm
       :handler="answerHandler"
+      v-model="answerResult"
       v-if="isStateRun"
     />
     <button
@@ -66,6 +67,7 @@ export default {
     question: null,
     userAnswer: '',
     gameResultMessage: '',
+    answerResult: '',
     timeToAnswerTheQuestion: 100
   }),
   computed: {
@@ -86,7 +88,9 @@ export default {
     },
     answerHandler(answer) {
       if (checkAnswer(this.$data.question, Number.parseInt(answer))) {
+        console.log(this.$data.answerResult);
         this.$data.gameResultMessage = 'Correct!';
+        this.$data.answerResult = '';
         setTimeout(() => {
           this.$data.gameResultMessage = ''
         }, 1000);
