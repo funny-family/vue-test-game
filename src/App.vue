@@ -6,9 +6,11 @@
       v-if="isStateAnswer"
     />
     <Counter
-      amount="3"
+      amount="5"
       :timeout-handler="timeoutHandler"
+      v-if="!gameResultMessage"
     />
+    <div v-else>{{ gameResultMessage }}</div>
     <Question
       :question="question"
       v-if="isStateRun"
@@ -31,8 +33,7 @@ import Question from './components/Question.vue';
 import Counter from './components/Counter.vue';
 import AnswerForm from './components/AnswerForm.vue';
 import Message from './components/Message.vue';
-import { generateQuestion } from './services/questions.js';
-import { checkAnswer } from './services/questions';
+import { checkAnswer, generateQuestion } from './services/questions';
 
 const GAME_STATE_IDLE = 'idle';
 const GAME_STATE_RUN = 'run';
