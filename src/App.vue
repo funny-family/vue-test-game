@@ -87,6 +87,9 @@ export default {
     answerHandler(answer) {
       if (checkAnswer(this.$data.question, Number.parseInt(answer))) {
         this.$data.gameResultMessage = 'Correct!';
+        setTimeout(() => {
+          this.$data.gameResultMessage = ''
+        }, 1000);
         this.$data.question = generateQuestion();
       } else {
         this.$data.gameResultMessage = 'Wrong!';
