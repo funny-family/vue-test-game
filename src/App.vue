@@ -114,7 +114,9 @@ export default {
 };
 </script>
 
-<style>
+<style lang="scss">
+@import './components/globalButtonStyle';
+
 #app {
   font-family: 'Jost';
   -webkit-font-smoothing: antialiased;
