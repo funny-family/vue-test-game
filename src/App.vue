@@ -88,8 +88,7 @@ export default {
     answerResultMessage: '',
     answerResult: '',
     timerTimeLimit: 100,
-    testNum: Number,
-    initialTime: 100
+    testNum: Number
   }),
   computed: {
     isStateRun() {
