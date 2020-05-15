@@ -1,54 +1,68 @@
 <template>
   <div id="app">
-    <h1>Let's play a numeric game!</h1>
-    <Message
-      :message="answerResultMessage"
-      v-if="isStateAnswer"
-    />
-    <Timer
-      :reset-game-time="resetGameTime"
-      :timeLimit="timerTimeLimit"
-      v-model="testNum"
-      v-if="isStateRun"
-    />
-    <div
-      :style="{
-        color:
-          answerResultMessage === 'Correct!'? '#2CE855' :
-          answerResultMessage === 'Time is over!' ? '#2c3e50' :
-          '#EB3D3D'
-      }"
-    >
-      {{ answerResultMessage }}
+    <div class="app-container">
+      <StartModalWindow
+        :show="isModalVisible"
+        @close="startClicked"
+      />
+      <Message
+        :message="answerResultMessage"
+        v-if="isStateAnswer"
+      />
+      <Timer
+        :resetGameTime="resetGameTime"
+        :timeLimit="timerTimeLimit"
+        v-model="testNum"
+        v-if="isStateRun"
+      />
+      <div
+        :style="{
+          color:
+            answerResultMessage === 'Correct!'? '#2CE855' :
+            answerResultMessage === 'Time is over!' ? '#2c3e50' :
+            '#EB3D3D'
+        }"
+      >
+        {{ answerResultMessage }}
+      </div>
+      <Question
+        :question="question"
+        v-if="isStateRun"
+      />
+      <AnswerForm
+        :handler="answerHandler"
+        v-model="answerResult"
+        v-if="isStateRun"
+      />
+      <SimpleTimer
+        :timeToStart="5"
+        :startGameAfterTimerEnd="startGameAfterTimerEnd"
+        v-if="isGameStating"
+      />
+      <!-- <div class="game-start-button">
+        <button
+          @click="startClicked"
+          v-if="isStateIdle || isStateAnswer"
+        >
+          <div v-if="answerResultMessage === 'Time is over!'">
+            Restart game
+          </div>
+          <div v-else>
+            Start game!
+          </div>
+        </button>
+      </div> -->
     </div>
-    <Question
-      :question="question"
-      v-if="isStateRun"
-    />
-    <AnswerForm
-      :handler="answerHandler"
-      v-model="answerResult"
-      v-if="isStateRun"
-    />
-    <button
-      @click="startClicked"
-      v-if="isStateIdle || isStateAnswer"
-    >
-      <div v-if="answerResultMessage === 'Time is over!'">
-        Restart game
-      </div>
-      <div v-else>
-        Start game!
-      </div>
-    </button>
   </div>
 </template>
 
 <script>
 import Question from './components/Question.vue';
 import Timer from './components/Timer';
+import SimpleTimer from './components/SimpleTimer';
 import AnswerForm from './components/AnswerForm.vue';
 import Message from './components/Message.vue';
+import StartModalWindow from './components/StartModalWindow';
 import { checkAnswer, generateQuestion } from './services/questions';
 
 const GAME_STATE_IDLE = 'idle';
@@ -58,13 +72,17 @@ const GAME_STATE_SHOW_ANSWER = 'showAnswer';
 export default {
   name: 'App',
   components: {
+    StartModalWindow,
     Question,
     Timer,
+    SimpleTimer,
     AnswerForm,
     Message
   },
   data: () => ({
     gameState: GAME_STATE_IDLE,
+    isModalVisible: true,
+    isGameStating: false,
     question: null,
     userAnswer: '',
     answerResultMessage: '',
@@ -90,6 +108,16 @@ export default {
       this.$data.timerTimeLimit = 100;
       this.$data.gameState = GAME_STATE_IDLE;
     },
+    startGameAfterTimerEnd() {
+      this.$data.gameState = GAME_STATE_RUN;
+      this.$data.answerResultMessage = '';
+      this.$data.question = generateQuestion();
+      this.$data.isGameStating = false;
+    },
+    startClicked() {
+      this.$data.isModalVisible = false;
+      this.$data.isGameStating = true;
+    },
     answerHandler(answer) {
       if (checkAnswer(this.$data.question, Number.parseInt(answer))) {
         this.$data.answerResultMessage = 'Correct!';
@@ -105,10 +133,8 @@ export default {
       // TODO?
       // this.$data.gameState = GAME_STATE_SHOW_ANSWER;
     },
-    startClicked() {
-      this.$data.question = generateQuestion();
-      this.$data.gameState = GAME_STATE_RUN;
-      this.$data.answerResultMessage = '';
+    close() {
+      this.$emit('close');
     }
   }
 };
@@ -116,13 +142,39 @@ export default {
 
 <style lang="scss">
 @import './components/globalButtonStyle';
+@import './components/colorStyles';
+
+.app-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 100vh;
+}
+
+.game-start-button {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
 
 #app {
   font-family: 'Jost';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  text-align: center;
-  color: #2c3e50;
-  margin-top: 60px;
+  color: $Bluewood;
+  padding: 0;
+  margin: 0;
+}
+
+html {
+  width: 100%;
+  height: calc(var(--vh, 1vh) * 100);
+}
+
+body {
+  margin: 0;
+  padding: 0;
+  width: 100%;
+  height: 100%;
 }
 </style>
