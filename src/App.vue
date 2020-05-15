@@ -34,7 +34,7 @@
         v-model="answerResult"
         v-if="isStateRun"
       />
-      <SimpleTimer
+      <GameStartTimer
         :timeToStart="5"
         :startGameAfterTimerEnd="startGameAfterTimerEnd"
         v-if="isGameStating"
@@ -59,7 +59,7 @@
 <script>
 import Question from './components/Question.vue';
 import Timer from './components/Timer';
-import SimpleTimer from './components/SimpleTimer';
+import GameStartTimer from './components/GameStartTimer';
 import AnswerForm from './components/AnswerForm.vue';
 import Message from './components/Message.vue';
 import StartModalWindow from './components/StartModalWindow';
@@ -75,7 +75,7 @@ export default {
     StartModalWindow,
     Question,
     Timer,
-    SimpleTimer,
+    GameStartTimer,
     AnswerForm,
     Message
   },
