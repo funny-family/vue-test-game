@@ -16,7 +16,7 @@ button {
     transition: background-color 0.2s ease-in-out;
     background-color: #f8f8f8;
   }
-  &:focus {
+  &:active {
     transition: background-color 0.2s ease-in-out;
     background-color: #e7e7e7;
   }
