@@ -2,23 +2,24 @@
   <div id="app">
     <h1>Let's play a numeric game!</h1>
     <Message
-      :message="message"
+      :message="answerResultMessage"
       v-if="isStateAnswer"
     />
-    <Counter
-      :amount="timeToAnswerTheQuestion"
-      :timeout-handler="timeoutHandler"
+    <Timer
+      :reset-game-time="resetGameTime"
+      :timeLimit="timerTimeLimit"
+      v-model="testNum"
       v-if="isStateRun"
     />
     <div
       :style="{
         color:
-          gameResultMessage === 'Correct!'? '#2CE855' :
-          gameResultMessage === 'Time is over!' ? '#2c3e50' :
+          answerResultMessage === 'Correct!'? '#2CE855' :
+          answerResultMessage === 'Time is over!' ? '#2c3e50' :
           '#EB3D3D'
       }"
     >
-      {{ gameResultMessage }}
+      {{ answerResultMessage }}
     </div>
     <Question
       :question="question"
@@ -33,8 +34,8 @@
       @click="startClicked"
       v-if="isStateIdle || isStateAnswer"
     >
-      <div v-if="gameResultMessage === 'Time is over!'">
-        Restart game.
+      <div v-if="answerResultMessage === 'Time is over!'">
+        Restart game
       </div>
       <div v-else>
         Start game!
@@ -45,7 +46,7 @@
 
 <script>
 import Question from './components/Question.vue';
-import Counter from './components/Counter.vue';
+import Timer from './components/Timer';
 import AnswerForm from './components/AnswerForm.vue';
 import Message from './components/Message.vue';
 import { checkAnswer, generateQuestion } from './services/questions';
@@ -58,7 +59,7 @@ export default {
   name: 'App',
   components: {
     Question,
-    Counter,
+    Timer,
     AnswerForm,
     Message
   },
@@ -66,9 +67,11 @@ export default {
     gameState: GAME_STATE_IDLE,
     question: null,
     userAnswer: '',
-    gameResultMessage: '',
+    answerResultMessage: '',
     answerResult: '',
-    timeToAnswerTheQuestion: 100
+    timerTimeLimit: 100,
+    testNum: Number,
+    initialTime: 100
   }),
   computed: {
     isStateRun() {
@@ -82,29 +85,30 @@ export default {
     }
   },
   methods: {
-    timeoutHandler() {
-      this.$data.gameResultMessage = 'Time is over!';
+    resetGameTime() { // stop game when time go beyond 0
+      this.$data.answerResultMessage = 'Time is over!';
+      this.$data.timerTimeLimit = 100;
       this.$data.gameState = GAME_STATE_IDLE;
     },
     answerHandler(answer) {
       if (checkAnswer(this.$data.question, Number.parseInt(answer))) {
-        console.log(this.$data.answerResult);
-        this.$data.gameResultMessage = 'Correct!';
+        this.$data.answerResultMessage = 'Correct!';
+        this.$data.timerTimeLimit += 4;
         this.$data.answerResult = '';
         setTimeout(() => {
-          this.$data.gameResultMessage = ''
+          this.$data.answerResultMessage = ''
         }, 500);
         this.$data.question = generateQuestion();
       } else {
-        this.$data.gameResultMessage = 'Wrong!';
+        this.$data.answerResultMessage = 'Wrong!';
       }
       // TODO?
-      //this.$data.gameState = GAME_STATE_SHOW_ANSWER;
+      // this.$data.gameState = GAME_STATE_SHOW_ANSWER;
     },
     startClicked() {
       this.$data.question = generateQuestion();
       this.$data.gameState = GAME_STATE_RUN;
-      this.$data.gameResultMessage = '';
+      this.$data.answerResultMessage = '';
     }
   }
 };
@@ -112,7 +116,7 @@ export default {
 
 <style>
 #app {
-  font-family: "Avenir", Helvetica, Arial, sans-serif;
+  font-family: 'Jost';
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
   text-align: center;
