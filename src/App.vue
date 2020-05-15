@@ -1,7 +1,7 @@
 <template>
   <div id="app">
     <div class="app-container">
-      <StartModalWindow
+      <GameStartModalWindow
         :show="isModalVisible"
         @close="startClicked"
       />
@@ -62,7 +62,7 @@ import Timer from './components/Timer';
 import GameStartTimer from './components/GameStartTimer';
 import AnswerForm from './components/AnswerForm.vue';
 import Message from './components/Message.vue';
-import StartModalWindow from './components/StartModalWindow';
+import GameStartModalWindow from './components/GameStartModalWindow';
 import { checkAnswer, generateQuestion } from './services/questions';
 
 const GAME_STATE_IDLE = 'idle';
@@ -72,7 +72,7 @@ const GAME_STATE_SHOW_ANSWER = 'showAnswer';
 export default {
   name: 'App',
   components: {
-    StartModalWindow,
+    GameStartModalWindow,
     Question,
     Timer,
     GameStartTimer,
