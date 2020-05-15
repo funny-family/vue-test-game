@@ -2,8 +2,10 @@
   <div id="app">
     <div class="app-container">
       <GameStartModalWindow
-        :show="isModalVisible"
+        :show="isGameStartModalVisible"
         @close="startClicked"
+      />
+      <GameEndModalWindow
       />
       <Message
         :message="answerResultMessage"
@@ -81,7 +83,7 @@ export default {
   },
   data: () => ({
     gameState: GAME_STATE_IDLE,
-    isModalVisible: true,
+    isGameStartModalVisible: true,
     isGameStating: false,
     question: null,
     userAnswer: '',
@@ -114,7 +116,7 @@ export default {
       this.$data.isGameStating = false;
     },
     startClicked() {
-      this.$data.isModalVisible = false;
+      this.$data.isGameStartModalVisible = false;
       this.$data.isGameStating = true;
     },
     answerHandler(answer) {
