@@ -5,15 +5,14 @@
 </template>
 
 <script>
-const TICK = 1000;
+const timerTickDelay = 1000;
 
 export default {
   props: {
-    amount: {
-      type: Number,
-      default: 1
+    startTime: {
+      type: Number
     },
-    timeoutHandler: {
+    resetGameTime: {
       type: Function
     }
   },
@@ -21,19 +20,19 @@ export default {
     time: 0
   }),
   created() {
-    this.$data.time = this.$props.amount;
-    this.timer = setTimeout(this.tick, TICK);
+    this.$data.time = this.$props.startTime;
+    this.timer = setTimeout(this.doTimerTick, timerTickDelay);
   },
   destroyed() {
     clearTimeout(this.timer);
   },
   methods: {
-    tick() {
-      this.$data.time -= TICK / 1000;
-      if (this.$data.time > 0) {
-        this.timer = setTimeout(this.tick, TICK);
+    doTimerTick() {
+      this.$data.time -= timerTickDelay / 1000;
+      if (this.$data.time >= 0) {
+        this.timer = setTimeout(this.doTimerTick, timerTickDelay);
       } else {
-        this.$props.timeoutHandler();
+        this.$props.resetGameTime();
       }
     }
   }
