@@ -10,40 +10,46 @@
         @close="startClicked"
         v-if="answerResultMessage === 'Time is over!'"
       />
-      <Message
-        :message="answerResultMessage"
-        v-if="isStateAnswer"
-      />
       <Timer
+        class="timer"
         :resetGameTime="resetGameTime"
         :timeLimit="timerTimeLimit"
         v-model="testNum"
         v-if="isStateRun"
       />
-      <div
-        :style="{
-          color:
-            answerResultMessage === 'Correct!' ? '#2CE855' : '#EB3D3D',
-          display:
-            answerResultMessage === 'Time is over!' ? 'none' : ''
-        }"
-      >
-        {{ answerResultMessage }}
+      <div class="game-form">
+        <GameStartTimer
+          :timeToStart="3"
+          :startGameAfterTimerEnd="startGameAfterTimerEnd"
+          v-if="isGameStarting"
+        />
+        <div class="answer-result-message">
+          <Message
+            :message="answerResultMessage"
+            v-if="isStateAnswer"
+          />
+          <div
+            :style="{
+              color:
+                answerResultMessage === 'Correct!' ? '#2CE855' : '#EB3D3D',
+              display:
+                answerResultMessage === 'Time is over!' ? 'none' : ''
+            }"
+          >
+            {{ answerResultMessage }}
+          </div>
+        </div>
+        <Question
+          class="question"
+          :question="question"
+          v-if="isStateRun"
+        />
+        <AnswerForm
+          :handler="answerHandler"
+          v-model="answerResult"
+          v-if="isStateRun"
+        />
       </div>
-      <Question
-        :question="question"
-        v-if="isStateRun"
-      />
-      <AnswerForm
-        :handler="answerHandler"
-        v-model="answerResult"
-        v-if="isStateRun"
-      />
-      <GameStartTimer
-        :timeToStart="3"
-        :startGameAfterTimerEnd="startGameAfterTimerEnd"
-        v-if="isGameStarting"
-      />
     </div>
   </div>
 </template>
@@ -82,7 +88,7 @@ export default {
     userAnswer: '',
     answerResultMessage: '',
     answerResult: '',
-    timerTimeLimit: 10,
+    timerTimeLimit: Number,
     testNum: Number
   }),
   computed: {
@@ -112,7 +118,7 @@ export default {
       this.$data.isGameStartModalVisible = false;
       this.$data.isGameEndModalVisible = false;
       this.$data.isGameStarting = true;
-      this.$data.timerTimeLimit = 10;
+      this.$data.timerTimeLimit = 1000;
     },
     answerHandler(answer) {
       if (checkAnswer(this.$data.question, Number.parseInt(answer))) {
@@ -147,10 +153,31 @@ export default {
   height: 100vh;
 }
 
+.game-form {
+  display: flex;
+  flex-direction: column;
+  margin-left: 16px;
+}
+
 .game-start-button {
   display: flex;
   justify-content: center;
   align-items: center;
+}
+
+.answer-result-message {
+  width: 240px;
+  text-align: center;
+  font-size: 40px;
+  font-weight: bold;
+}
+
+.question {
+  width: 240px;
+  text-align: center;
+  font-size: 20px;
+  font-weight: bolder;
+  margin: 4px 0;
 }
 
 #app {
