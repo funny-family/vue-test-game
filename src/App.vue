@@ -6,6 +6,9 @@
         @close="startClicked"
       />
       <GameEndModalWindow
+        :show="isGameEndModalVisible"
+        @close="startClicked"
+        v-if="answerResultMessage === 'Time is over!'"
       />
       <Message
         :message="answerResultMessage"
@@ -20,9 +23,9 @@
       <div
         :style="{
           color:
-            answerResultMessage === 'Correct!'? '#2CE855' :
-            answerResultMessage === 'Time is over!' ? '#2c3e50' :
-            '#EB3D3D'
+            answerResultMessage === 'Correct!' ? '#2CE855' : '#EB3D3D',
+          display:
+            answerResultMessage === 'Time is over!' ? 'none' : ''
         }"
       >
         {{ answerResultMessage }}
@@ -37,23 +40,10 @@
         v-if="isStateRun"
       />
       <GameStartTimer
-        :timeToStart="5"
+        :timeToStart="3"
         :startGameAfterTimerEnd="startGameAfterTimerEnd"
-        v-if="isGameStating"
+        v-if="isGameStarting"
       />
-      <!-- <div class="game-start-button">
-        <button
-          @click="startClicked"
-          v-if="isStateIdle || isStateAnswer"
-        >
-          <div v-if="answerResultMessage === 'Time is over!'">
-            Restart game
-          </div>
-          <div v-else>
-            Start game!
-          </div>
-        </button>
-      </div> -->
     </div>
   </div>
 </template>
@@ -65,6 +55,7 @@ import GameStartTimer from './components/GameStartTimer';
 import AnswerForm from './components/AnswerForm.vue';
 import Message from './components/Message.vue';
 import GameStartModalWindow from './components/GameStartModalWindow';
+import GameEndModalWindow from './components/GameEndModalWindow'
 import { checkAnswer, generateQuestion } from './services/questions';
 
 const GAME_STATE_IDLE = 'idle';
@@ -75,6 +66,7 @@ export default {
   name: 'App',
   components: {
     GameStartModalWindow,
+    GameEndModalWindow,
     Question,
     Timer,
     GameStartTimer,
@@ -84,12 +76,13 @@ export default {
   data: () => ({
     gameState: GAME_STATE_IDLE,
     isGameStartModalVisible: true,
-    isGameStating: false,
+    isGameEndModalVisible: true,
+    isGameStarting: false,
     question: null,
     userAnswer: '',
     answerResultMessage: '',
     answerResult: '',
-    timerTimeLimit: 100,
+    timerTimeLimit: 10,
     testNum: Number
   }),
   computed: {
@@ -106,18 +99,20 @@ export default {
   methods: {
     resetGameTime() { // stop game when time go beyond 0
       this.$data.answerResultMessage = 'Time is over!';
-      this.$data.timerTimeLimit = 100;
+      this.$data.isGameEndModalVisible = true;
       this.$data.gameState = GAME_STATE_IDLE;
     },
     startGameAfterTimerEnd() {
       this.$data.gameState = GAME_STATE_RUN;
       this.$data.answerResultMessage = '';
       this.$data.question = generateQuestion();
-      this.$data.isGameStating = false;
+      this.$data.isGameStarting = false;
     },
     startClicked() {
       this.$data.isGameStartModalVisible = false;
-      this.$data.isGameStating = true;
+      this.$data.isGameEndModalVisible = false;
+      this.$data.isGameStarting = true;
+      this.$data.timerTimeLimit = 10;
     },
     answerHandler(answer) {
       if (checkAnswer(this.$data.question, Number.parseInt(answer))) {
