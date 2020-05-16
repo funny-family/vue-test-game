@@ -3,22 +3,24 @@
     <div class="app-container">
       <GameStartModalWindow
         :show="isGameStartModalVisible"
-        @close="startClicked"
+        @close="startTimerToStartGame"
       />
       <GameEndModalWindow
         :show="isGameEndModalVisible"
-        @close="startClicked"
+        @close="startTimerToStartGame"
         v-if="answerResultMessage === 'Time is over!'"
       />
       <Timer
         class="timer"
         :resetGameTime="resetGameTime"
         :timeLimit="timerTimeLimit"
-        v-model="testNum"
+        :warningThreshold="warningThreshold"
+        :alertThreshold="warningThreshold"
         v-if="isStateRun"
       />
       <div class="game-form">
         <GameStartTimer
+          style="text-align: center;"
           :timeToStart="3"
           :startGameAfterTimerEnd="startGameAfterTimerEnd"
           v-if="isGameStarting"
@@ -89,7 +91,8 @@ export default {
     answerResultMessage: '',
     answerResult: '',
     timerTimeLimit: Number,
-    testNum: Number
+    warningThreshold: Number,
+    alertThreshold: Number
   }),
   computed: {
     isStateRun() {
@@ -114,11 +117,13 @@ export default {
       this.$data.question = generateQuestion();
       this.$data.isGameStarting = false;
     },
-    startClicked() {
+    startTimerToStartGame() {
       this.$data.isGameStartModalVisible = false;
       this.$data.isGameEndModalVisible = false;
       this.$data.isGameStarting = true;
-      this.$data.timerTimeLimit = 1000;
+      this.$data.timerTimeLimit = 10;
+      this.$data.warningThreshold = 4;
+      this.$data.alertThreshold = 2;
     },
     answerHandler(answer) {
       if (checkAnswer(this.$data.question, Number.parseInt(answer))) {

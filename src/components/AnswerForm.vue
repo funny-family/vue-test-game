@@ -6,6 +6,7 @@
         type="text"
         autocomplete="off"
         placeholder="Your answer"
+        ref="answer"
         :value="value"
         @keyup.enter="sendAnswer"
         @input="updateInputValue($event.target.value)"
@@ -24,6 +25,7 @@ export default {
   methods: {
     sendAnswer() {
       this.$props.handler(this.$props.value);
+      this.$refs.answer.focus();
     },
     updateInputValue (value) {
       this.$emit('input', value);

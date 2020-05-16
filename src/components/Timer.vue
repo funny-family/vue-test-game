@@ -4,7 +4,7 @@
       <g class="base-timer__circle">
         <circle class="base-timer__path-elapsed" cx="50" cy="50" r="45"></circle>
         <path
-          :stroke-dasharray="circleDasharray"
+          :stroke-dasharray="circleDashArray"
           class="base-timer__path-remaining"
           :class="remainingPathColor"
           d="
@@ -22,22 +22,6 @@
 
 <script>
 const FULL_DASH_ARRAY = 283;
-const WARNING_THRESHOLD = 10;
-const ALERT_THRESHOLD = 5;
-
-const COLOR_CODES = {
-  info: {
-    color: 'green'
-  },
-  warning: {
-    color: 'orange',
-    threshold: WARNING_THRESHOLD
-  },
-  alert: {
-    color: 'red',
-    threshold: ALERT_THRESHOLD
-  }
-};
 
 export default {
   data: () => ({
@@ -52,11 +36,35 @@ export default {
     timeLimit: {
       type: Number,
       default: 10
+    },
+    warningThreshold: {
+      type: Number,
+      default: 4
+    },
+    alertThreshold: {
+      type: Number,
+      default: 2
     }
   },
 
   computed: {
-    circleDasharray() {
+    colorCodes() {
+      return {
+        info: {
+          color: 'green'
+        },
+        warning: {
+          color: 'orange',
+          threshold: this.$props.warningThreshold
+        },
+        alert: {
+          color: 'red',
+          threshold: this.$props.alertThreshold
+        }
+      }
+    },
+
+    circleDashArray() {
       return `${(this.timeFraction * FULL_DASH_ARRAY).toFixed(0)} 283`;
     },
 
@@ -82,7 +90,7 @@ export default {
     },
 
     remainingPathColor() {
-      const { alert, warning, info } = COLOR_CODES;
+      const { alert, warning, info } = this.colorCodes;
 
       if (this.timeLeft <= alert.threshold) {
         return alert.color;
@@ -109,7 +117,7 @@ export default {
 
   methods: {
     onTimesUp() {
-      clearInterval(this.timerInterval);
+      clearInterval(this.timerInterval); 
     },
 
     startTimer() {

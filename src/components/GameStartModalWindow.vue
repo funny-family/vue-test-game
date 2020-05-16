@@ -8,7 +8,7 @@
             type="button"
             @click="close"
           >
-            Ok 👌
+            Start game! 👌
           </button>
         </div>
       </div>
