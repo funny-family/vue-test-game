@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="time">
     {{ time }}
   </div>
 </template>
@@ -38,3 +38,10 @@ export default {
   }
 };
 </script>
+
+<style lang="scss" scoped>
+.time {
+  font-weight: bold;
+  font-size: 200px;
+}
+</style>
