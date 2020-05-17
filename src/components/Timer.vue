@@ -21,32 +21,34 @@
 </template>
 
 <script>
-const FULL_DASH_ARRAY = 283;
+let FULL_DASH_ARRAY = 283;
 
 export default {
   data: () => ({
     timePassed: 0,
     timerInterval: null
   }),
-
   props: {
     resetGameTime: {
-      type: Function
+      type: Function,
+      required: true
     },
     timeLimit: {
       type: Number,
-      default: 10
+      default: 10,
+      required: true
     },
     warningThreshold: {
       type: Number,
-      default: 4
+      default: 4,
+      required: true
     },
     alertThreshold: {
       type: Number,
-      default: 2
+      default: 2,
+      required: true
     }
   },
-
   computed: {
     colorCodes() {
       return {
@@ -63,11 +65,9 @@ export default {
         }
       }
     },
-
     circleDashArray() {
       return `${(this.timeFraction * FULL_DASH_ARRAY).toFixed(0)} 283`;
     },
-
     formattedTimeLeft() {
       const timeLeft = this.timeLeft;
       const minutes = Math.floor(timeLeft / 60);
@@ -76,32 +76,28 @@ export default {
       if (seconds < 10) {
         seconds = `0${seconds}`;
       }
-
       return `${minutes}:${seconds}`;
     },
-
     timeLeft() {
       return this.$props.timeLimit - this.timePassed;
     },
-
     timeFraction() {
       const rawTimeFraction = this.timeLeft / this.$props.timeLimit;
+
       return rawTimeFraction - (1 / this.$props.timeLimit) * (1 - rawTimeFraction);
     },
-
     remainingPathColor() {
       const { alert, warning, info } = this.colorCodes;
-
+      
       if (this.timeLeft <= alert.threshold) {
-        return alert.color;
-      } else if (this.timeLeft <= warning.threshold) {
-        return warning.color;
-      } else {
-        return info.color;
-      }
-    }
+         return alert.color;
+       } else if (this.timeLeft <= warning.threshold) {
+         return warning.color;
+       } else {
+         return info.color;
+       }
+    } 
   },
-
   watch: {
     timeLeft(newValue) {
       if (newValue === 0) {
@@ -110,18 +106,15 @@ export default {
       }
     }
   },
-
   mounted() {
     this.startTimer();
   },
-
   methods: {
     onTimesUp() {
-      clearInterval(this.timerInterval); 
+      clearInterval(this.$data.timerInterval); 
     },
-
     startTimer() {
-      this.timerInterval = setInterval(() => (this.timePassed += 1), 1000);
+      this.$data.timerInterval = setInterval(() => (this.$data.timePassed += 1), 1000);
     }
   }
 };
@@ -130,49 +123,41 @@ export default {
 <style scoped lang="scss">
 .base-timer {
   position: relative;
-  width: 200px;
-  height: 200px;
-
+  width: 180px;
+  height: 180px;
   &__svg {
     transform: scaleX(-1);
   }
-
   &__circle {
     fill: none;
     stroke: none;
   }
-
   &__path-elapsed {
     stroke-width: 7px;
     stroke: grey;
   }
-
   &__path-remaining {
     stroke-width: 7px;
-    stroke-linecap: round;
+    // stroke-linecap: round;
     transform: rotate(90deg);
     transform-origin: center;
     transition: 1s linear all;
     fill-rule: nonzero;
     stroke: currentColor;
-
     &.green {
       color: rgb(65, 184, 131);
     }
-
     &.orange {
       color: orange;
     }
-
     &.red {
       color: red;
     }
   }
-
   &__label {
     position: absolute;
-    width: 200px;
-    height: 200px;
+    width: 180px;
+    height: 180px;
     top: 0;
     display: flex;
     align-items: center;

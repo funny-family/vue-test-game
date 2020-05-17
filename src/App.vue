@@ -15,7 +15,7 @@
         :resetGameTime="resetGameTime"
         :timeLimit="timerTimeLimit"
         :warningThreshold="warningThreshold"
-        :alertThreshold="warningThreshold"
+        :alertThreshold="alertThreshold"
         v-if="isStateRun"
       />
       <div class="game-form">
@@ -90,9 +90,9 @@ export default {
     userAnswer: '',
     answerResultMessage: '',
     answerResult: '',
-    timerTimeLimit: Number,
-    warningThreshold: Number,
-    alertThreshold: Number
+    timerTimeLimit: 0,
+    warningThreshold: 0,
+    alertThreshold: 0
   }),
   computed: {
     isStateRun() {
@@ -128,8 +128,12 @@ export default {
     answerHandler(answer) {
       if (checkAnswer(this.$data.question, Number.parseInt(answer))) {
         this.$data.answerResultMessage = 'Correct!';
-        this.$data.timerTimeLimit += 4;
         this.$data.answerResult = '';
+
+        // this.$data.timerTimeLimit += 2;
+        // this.$data.warningThreshold += 2;
+        // this.$data.alertThreshold += 2;
+
         setTimeout(() => {
           this.$data.answerResultMessage = ''
         }, 500);
@@ -139,17 +143,14 @@ export default {
       }
       // TODO?
       // this.$data.gameState = GAME_STATE_SHOW_ANSWER;
-    },
-    close() {
-      this.$emit('close');
     }
   }
 };
 </script>
 
 <style lang="scss">
-@import './components/globalButtonStyle';
-@import './components/colorStyles';
+@import './assets/globalStyles/buttonStyles';
+@import './assets/globalStyles/colorStyles';
 
 .app-container {
   display: flex;
