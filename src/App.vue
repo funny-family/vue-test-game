@@ -1,5 +1,9 @@
 <template>
   <div id="app">
+    <ScoreBord
+      :currentScrore="currentScrore"
+      :show="isScoreboardVisible"
+    />
     <div class="app-container">
       <GameStartModalWindow
         :show="isGameStartModalVisible"
@@ -57,6 +61,7 @@
 </template>
 
 <script>
+import ScoreBord from './components/ScoreBord'
 import Question from './components/Question.vue';
 import Timer from './components/Timer';
 import GameStartTimer from './components/GameStartTimer';
@@ -73,6 +78,7 @@ const GAME_STATE_SHOW_ANSWER = 'showAnswer';
 export default {
   name: 'App',
   components: {
+    ScoreBord,
     GameStartModalWindow,
     GameEndModalWindow,
     Question,
@@ -92,7 +98,9 @@ export default {
     answerResult: '',
     timerTimeLimit: 0,
     warningThreshold: 0,
-    alertThreshold: 0
+    alertThreshold: 0,
+    currentScrore: 0,
+    isScoreboardVisible: false
   }),
   computed: {
     isStateRun() {
@@ -108,7 +116,11 @@ export default {
   methods: {
     resetGameTime() { // stop game when time go beyond 0
       this.$data.answerResultMessage = 'Time is over!';
+      this.$data.currentScrore = 0;
       this.$data.isGameEndModalVisible = true;
+      if (this.$data.answerResultMessage === 'Time is over!') {
+        this.$data.isScoreboardVisible = false;
+      }
       this.$data.gameState = GAME_STATE_IDLE;
     },
     startGameAfterTimerEnd() {
@@ -116,6 +128,8 @@ export default {
       this.$data.answerResultMessage = '';
       this.$data.question = generateQuestion();
       this.$data.isGameStarting = false;
+      this.$data.isScoreboardVisible = true;
+
     },
     startTimerToStartGame() {
       this.$data.isGameStartModalVisible = false;
@@ -129,6 +143,9 @@ export default {
       if (checkAnswer(this.$data.question, Number.parseInt(answer))) {
         this.$data.answerResultMessage = 'Correct!';
         this.$data.answerResult = '';
+
+        this.$data.currentScrore += 100;
+        console.log(this.$data.currentScrore);
 
         this.$data.timerTimeLimit += 2;
         this.$data.warningThreshold += 2;
