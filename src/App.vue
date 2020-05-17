@@ -130,9 +130,9 @@ export default {
         this.$data.answerResultMessage = 'Correct!';
         this.$data.answerResult = '';
 
-        // this.$data.timerTimeLimit += 2;
-        // this.$data.warningThreshold += 2;
-        // this.$data.alertThreshold += 2;
+        this.$data.timerTimeLimit += 2;
+        this.$data.warningThreshold += 2;
+        this.$data.alertThreshold += 2;
 
         setTimeout(() => {
           this.$data.answerResultMessage = ''
