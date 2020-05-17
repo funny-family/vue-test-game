@@ -35,7 +35,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './colorStyles';
+@import '../assets/globalStyles/colorStyles';
 
 .answer-form {
   width: 240px;

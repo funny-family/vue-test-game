@@ -30,7 +30,7 @@ export default {
 </script>
 
 <style lang="scss" scoped>
-@import './globalButtonStyle';
+@import '../assets/globalStyles/buttonStyles';
 
 .modal-mask {
   position: fixed;
