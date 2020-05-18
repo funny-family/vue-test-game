@@ -100,7 +100,7 @@ export default {
     warningThreshold: 0,
     alertThreshold: 0,
     currentScrore: 0,
-    isScoreboardVisible: false
+    isScoreboardVisible: true
   }),
   computed: {
     isStateRun() {
@@ -116,12 +116,12 @@ export default {
   methods: {
     resetGameTime() { // stop game when time go beyond 0
       this.$data.answerResultMessage = 'Time is over!';
-      this.$data.currentScrore = 0;
       this.$data.isGameEndModalVisible = true;
-      if (this.$data.answerResultMessage === 'Time is over!') {
-        this.$data.isScoreboardVisible = false;
-      }
+      // if (this.$data.answerResultMessage === 'Time is over!') {
+      //   this.$data.isScoreboardVisible = false;
+      // }
       this.$data.gameState = GAME_STATE_IDLE;
+      console.log(this.$data.currentScrore);
     },
     startGameAfterTimerEnd() {
       this.$data.gameState = GAME_STATE_RUN;
@@ -138,6 +138,7 @@ export default {
       this.$data.timerTimeLimit = 10;
       this.$data.warningThreshold = 4;
       this.$data.alertThreshold = 2;
+      this.$data.currentScrore = 0;
     },
     answerHandler(answer) {
       if (checkAnswer(this.$data.question, Number.parseInt(answer))) {
@@ -145,7 +146,6 @@ export default {
         this.$data.answerResult = '';
 
         this.$data.currentScrore += 100;
-        console.log(this.$data.currentScrore);
 
         this.$data.timerTimeLimit += 2;
         this.$data.warningThreshold += 2;
@@ -157,6 +157,7 @@ export default {
         this.$data.question = generateQuestion();
       } else {
         this.$data.answerResultMessage = 'Wrong!';
+        this.$data.currentScrore -= 25;
       }
       // TODO?
       // this.$data.gameState = GAME_STATE_SHOW_ANSWER;
