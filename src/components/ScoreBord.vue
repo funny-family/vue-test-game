@@ -23,8 +23,6 @@
 </template>
 
 <script>
-// let scoreContainer = [].splice(0, 3).sort((a, b) => b - a);
-
 export default {
   props: {
     currentScrore: {
@@ -33,19 +31,13 @@ export default {
     },
     scoresContainer: {
       type: Array,
-      default: () => [].splice(0, 3).sort((a, b) => b - a)
+      default: () => [].sort((a, b) => b - a)
     },
     show: {
       type: Boolean,
       default: true
     }
-  },
-  data: () => ({
-    firstPlace: 0,
-    secondPlace: 0,
-    thirdPlace: 0
-  }),
-  //
+  }
 }
 </script>
 

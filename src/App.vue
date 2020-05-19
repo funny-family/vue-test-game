@@ -101,8 +101,8 @@ export default {
     warningThreshold: 0,
     alertThreshold: 0,
     currentScrore: 0,
-    scoresContainer: [].splice(0, 3),
-    isScoreboardVisible: true
+    scoresContainer: [],
+    isScoreboardVisible: false
   }),
   computed: {
     isStateRun() {
@@ -119,11 +119,12 @@ export default {
     resetGameTime() { // stop game when time go beyond 0
       this.$data.answerResultMessage = 'Time is over!';
       this.$data.scoresContainer.push(this.$data.currentScrore);
+      this.$data.scoresContainer.sort((a, b) => b - a);
       this.$data.answerResult = '';
       this.$data.isGameEndModalVisible = true;
-      // if (this.$data.answerResultMessage === 'Time is over!') {
-      //   this.$data.isScoreboardVisible = false;
-      // }
+      if (this.$data.answerResultMessage === 'Time is over!') {
+        this.$data.isScoreboardVisible = false;
+      }
       this.$data.gameState = GAME_STATE_IDLE;
       console.log(this.$data.currentScrore);
     },
