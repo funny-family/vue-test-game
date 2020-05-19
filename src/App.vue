@@ -2,6 +2,7 @@
   <div id="app">
     <ScoreBord
       :currentScrore="currentScrore"
+      :scoresContainer="scoresContainer"
       :show="isScoreboardVisible"
     />
     <div class="app-container">
@@ -100,6 +101,7 @@ export default {
     warningThreshold: 0,
     alertThreshold: 0,
     currentScrore: 0,
+    scoresContainer: [],
     isScoreboardVisible: true
   }),
   computed: {
@@ -116,6 +118,8 @@ export default {
   methods: {
     resetGameTime() { // stop game when time go beyond 0
       this.$data.answerResultMessage = 'Time is over!';
+      this.$data.scoresContainer.push(this.$data.currentScrore);
+      this.$data.answerResult = '';
       this.$data.isGameEndModalVisible = true;
       // if (this.$data.answerResultMessage === 'Time is over!') {
       //   this.$data.isScoreboardVisible = false;
