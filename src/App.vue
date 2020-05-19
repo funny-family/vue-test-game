@@ -156,7 +156,7 @@ export default {
         this.$data.alertThreshold += 2;
 
         setTimeout(() => {
-          this.$data.answerResultMessage = ''
+          this.$data.answerResultMessage = '';
         }, 500);
         this.$data.question = generateQuestion();
       } else {
