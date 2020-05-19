@@ -126,7 +126,6 @@ export default {
         this.$data.isScoreboardVisible = false;
       }
       this.$data.gameState = GAME_STATE_IDLE;
-      console.log(this.$data.currentScrore);
     },
     startGameAfterTimerEnd() {
       this.$data.gameState = GAME_STATE_RUN;
@@ -161,10 +160,10 @@ export default {
         }, 500);
         this.$data.question = generateQuestion();
       } else {
-        if (this.$data.answerResult !== '' && this.$data.answerResultMessage === 'Wrong!') {
+        this.$data.answerResultMessage = 'Wrong!';
+        if (this.$data.answerResult !== '' && this.$data.answerResultMessage === 'Wrong!' && this.$data.currentScrore > 0) {
           this.$data.currentScrore -= 25;
         }
-        this.$data.answerResultMessage = 'Wrong!';
       }
       // TODO?
       // this.$data.gameState = GAME_STATE_SHOW_ANSWER;
