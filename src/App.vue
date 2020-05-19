@@ -101,7 +101,7 @@ export default {
     warningThreshold: 0,
     alertThreshold: 0,
     currentScrore: 0,
-    scoresContainer: [],
+    scoresContainer: [].splice(0, 3),
     isScoreboardVisible: true
   }),
   computed: {
