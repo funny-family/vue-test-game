@@ -156,8 +156,10 @@ export default {
         }, 500);
         this.$data.question = generateQuestion();
       } else {
+        if (this.$data.answerResult !== '' && this.$data.answerResultMessage === 'Wrong!') {
+          this.$data.currentScrore -= 25;
+        }
         this.$data.answerResultMessage = 'Wrong!';
-        this.$data.currentScrore -= 25;
       }
       // TODO?
       // this.$data.gameState = GAME_STATE_SHOW_ANSWER;
